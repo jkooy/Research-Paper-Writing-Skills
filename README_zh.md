@@ -10,11 +10,15 @@
 
 ## 仓库介绍
 
-当前仓库提供 1 个技能包：
+当前仓库提供 2 个技能包：
 
 - `research-paper-writing/`
   - `SKILL.md`：核心流程与使用规则
   - `references/`：按章节拆分的写作指南与模板
+  - `agents/openai.yaml`：Agent 元信息
+- `research-paper-workflow/`
+  - `SKILL.md`：总控型论文工作流
+  - `references/`：plan / write / review / packaging 的 phase checklist
   - `agents/openai.yaml`：Agent 元信息
 
 常见使用场景：
@@ -23,6 +27,7 @@
 - 改善段落衔接与章节逻辑
 - 做 claim-evidence 对齐检查
 - 提交前从 reviewer 视角进行自审
+- 从实验材料一路组织到 figures、LaTeX/PDF 和最终 review 的完整论文流程
 
 ## 安装方式
 
@@ -35,12 +40,14 @@
 ```bash
 mkdir -p "$CODEX_HOME/skills"
 cp -R research-paper-writing "$CODEX_HOME/skills/"
+cp -R research-paper-workflow "$CODEX_HOME/skills/"
 ```
 
 使用示例：
 
 ```text
 Use $research-paper-writing to improve my paper's Introduction.
+Use $research-paper-workflow to turn this experiment into a paper package with figures and LaTeX/PDF.
 ```
 
 ### 2) CC（Claude Code）
@@ -52,6 +59,7 @@ Use $research-paper-writing to improve my paper's Introduction.
 ```bash
 mkdir -p "$HOME/.claude/skills"
 cp -R research-paper-writing "$HOME/.claude/skills/"
+cp -R research-paper-workflow "$HOME/.claude/skills/"
 ```
 
 项目级安装：
@@ -59,9 +67,17 @@ cp -R research-paper-writing "$HOME/.claude/skills/"
 ```bash
 mkdir -p .claude/skills
 cp -R research-paper-writing .claude/skills/
+cp -R research-paper-workflow .claude/skills/
 ```
 
-使用时建议在提示词中显式指定，例如：`Please use the research-paper-writing skill`。
+使用时建议在提示词中显式指定，例如：
+
+- `Please use the research-paper-writing skill`
+- `Please use the research-paper-workflow skill`
+
+其中 `research-paper-workflow` 是一个轻量总控 skill：主写作仍复用
+`research-paper-writing`，只有在用户显式要求时才会额外分支到 NotebookLM
+生成可选的展示资产。
 
 ### 3) Gemini
 
@@ -70,6 +86,7 @@ cp -R research-paper-writing .claude/skills/
 ```bash
 mkdir -p "$HOME/.gemini/skills"
 cp -R research-paper-writing "$HOME/.gemini/skills/"
+cp -R research-paper-workflow "$HOME/.gemini/skills/"
 ```
 
 随后在 Gemini 中直接给出具体任务（例如：重写 Abstract 并做 claim-evidence 检查）。
