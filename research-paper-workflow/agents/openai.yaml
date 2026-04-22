@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Paper Workflow"
-  short_description: "Top-level orchestration for paper planning, drafting, review, and packaging"
-  default_prompt: "Use $research-paper-workflow to take my project from paper plan to drafted sections, figures, LaTeX/PDF deliverables, and a final review loop."
+  short_description: "Top-level orchestration for paper planning, figure strategy, drafting, review, and packaging"
+  default_prompt: "Use $research-paper-workflow to take my project from paper plan to drafted sections, figure strategy/specs, style-gated prose, LaTeX/PDF deliverables, and a final review loop."
