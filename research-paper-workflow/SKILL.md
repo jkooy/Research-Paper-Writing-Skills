@@ -1,6 +1,6 @@
 ---
 name: research-paper-workflow
-description: "Orchestrate an end-to-end ML/CV/NLP-style paper workflow: claim gating, outline planning, drafting via research-paper-writing, agent-style-backed style gates, figure strategy and figure QA, LaTeX/PDF packaging, final review and polish, with an optional NotebookLM asset branch."
+description: "Orchestrate an end-to-end ML/CV/NLP-style paper workflow: claim gating, outline planning, drafting via research-paper-writing, agent-style-backed style gates, figure strategy, an optional GPT Image 2 render/edit branch, figure QA, LaTeX/PDF packaging, final review and polish, with an optional NotebookLM asset branch."
 ---
 # Research Paper Workflow
 
@@ -18,6 +18,8 @@ full guidance:
   calibration, citation discipline, terminology stability, and anti-LLM-tell cleanup.
 - `../shared/academic-figure-bridge.md` is the shared figure-quality reference for
   teaser, overview, architecture, and other conceptual paper figures.
+- `../shared/gpt-image-paper-render.md` is the optional render-backend reference when a
+  paper figure should be rendered or edited through GPT Image 2.
 - `notebooklm` is an optional branch for alternative figures, slide decks, or other
   presentation assets after the paper package is stable.
 
@@ -49,18 +51,23 @@ In those cases, prefer the narrower skill directly.
    review. It is a shared reference, not a separate skill.
 3. `../shared/academic-figure-bridge.md` should stay in scope whenever the package
    includes conceptual figures, figure prompts, or figure QA.
-4. `notebooklm` is optional. Only use it when the user explicitly asks for an
+4. `../shared/gpt-image-paper-render.md` is optional. Load it when the user wants a
+   rendered figure mockup or reference-image edit through GPT Image 2.
+5. `notebooklm` is optional. Only use it when the user explicitly asks for an
      alternate figure, infographic, slide deck, or other NotebookLM artifact.
 
 If `research-paper-writing` is unavailable, stop and ask the user to install it.
+If `gpt-image` or the GPT Image 2 CLI is unavailable, continue with figure briefs and
+prompts only; do not block the main paper path.
 If `notebooklm` is unavailable, continue the main paper path without the optional
 asset branch.
 
 ## Core Workflow
 
 Load `references/workflow-phases.md` for the detailed phase checklist and keep
-`../shared/agent-style-paper-bridge.md` and `../shared/academic-figure-bridge.md`
-available as the shared prose and figure gates.
+`../shared/agent-style-paper-bridge.md`, `../shared/academic-figure-bridge.md`, and
+`../shared/gpt-image-paper-render.md` available as the shared prose, figure, and
+optional render gates.
 
 ### Phase 1: Intake and Package Definition
 
@@ -118,12 +125,14 @@ Produce the requested paper package:
 1. finalize the figure set needed for the paper story,
 2. route conceptual figures through the shared academic-figure bridge and decide whether
    each one should be an `editable spec`, `AI prompt`, or `hybrid` artifact,
-3. prefer LaTeX-first artifacts and editable or vector-first figure inputs for final
+3. if the user wants rendered mockups or reference-image edits, route the relevant
+   figures through the shared GPT Image 2 render bridge,
+4. prefer LaTeX-first artifacts and editable or vector-first figure inputs for final
    submission-facing work,
-4. produce PDF output when requested,
-5. if exact quantitative details are still missing, surface them explicitly instead of
+5. produce PDF output when requested,
+6. if exact quantitative details are still missing, surface them explicitly instead of
     inventing them.
-6. run the figure QA gate before handoff, especially for the first figure or teaser.
+7. run the figure QA gate before handoff, especially for the first figure or teaser.
 
 This phase exists to make sure the user gets a usable paper package rather than only
 raw prose.
@@ -138,7 +147,8 @@ Run a final paper-level review pass before handoff:
    term stability, filler cleanup),
 4. figure gate against the shared academic-figure bridge (figure role, style branch,
    editability, anti-AI-artifacts),
-5. final polish pass for wording and flow.
+5. render gate for any GPT Image 2 output (readable text, no clutter, backend fit),
+6. final polish pass for wording and flow.
 
 Use `research-paper-writing` for the polish pass instead of re-implementing a second
 writing guide here.
@@ -173,6 +183,9 @@ Rules:
 5. If the user only wants conceptual figure specs, prompts, or caption cleanup, use
    `research-paper-writing` directly with the shared academic-figure bridge instead of
    running the whole workflow.
+6. If the user wants actual GPT Image 2 renders or reference-image edits for paper
+   figures, keep the paper workflow but route the render step through the shared
+   GPT Image 2 render bridge.
 
 ## Output Contract
 
@@ -185,9 +198,10 @@ When this skill is used, the response should make the current paper package expl
      optional NotebookLM assets),
 5. `figure_gate`: figure roles, asset modes, style branches, and open QA risks for the
    figure set,
-6. `style_gate`: citation, terminology, prose, and figure-story risks still open after the
+6. `render_gate`: which figures, if any, used GPT Image 2, plus backend-specific risks,
+7. `style_gate`: citation, terminology, prose, and figure-story risks still open after the
    shared gates,
-7. `review_summary`: major risks remaining, what was polished, and what still blocks
+8. `review_summary`: major risks remaining, what was polished, and what still blocks
     submission quality.
 
 ## Guardrails
@@ -203,6 +217,9 @@ When this skill is used, the response should make the current paper package expl
 7. Prefer programmatic charts for quantitative figures and editable or vector-first
    artifacts for final submission-facing conceptual figures.
 8. Do not let figure styling drift from the paper's terminology, claims, or venue fit.
+9. Treat GPT Image 2 as an optional rendering backend for mockups, Chinese typography,
+   and reference-image edits; do not use it as the default path for exact quantitative
+   figures.
 
 ## Example Prompts
 
@@ -210,3 +227,4 @@ When this skill is used, the response should make the current paper package expl
 2. `Use research-paper-workflow on this repo and get me to a reviewer-ready paper package.`
 3. `Use research-paper-workflow to plan, write, review, and polish this draft, then generate optional NotebookLM slides.`
 4. `Use research-paper-workflow to turn these results into a paper package with a teaser figure spec, method figure plan, LaTeX, and PDF.`
+5. `Use research-paper-workflow to plan the paper and render a teaser mockup with GPT Image 2 after the figure brief is locked.`

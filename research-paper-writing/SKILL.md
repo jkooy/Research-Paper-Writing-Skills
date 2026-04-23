@@ -1,6 +1,6 @@
 ---
 name: research-paper-writing
-description: Improve academic paper writing quality for ML/CV/NLP-style papers with clear section structure, paragraph flow, agent-style-backed clarity, citation discipline, reviewer-facing presentation, and figure-story discipline. Use when drafting or revising sections, planning teaser/overview/method figures, generating figure specs or AI figure prompts, polishing figures/tables, checking claim-support alignment, or performing self-review before submission.
+description: Improve academic paper writing quality for ML/CV/NLP-style papers with clear section structure, paragraph flow, agent-style-backed clarity, citation discipline, reviewer-facing presentation, figure-story discipline, and an optional GPT Image 2 render/edit branch. Use when drafting or revising sections, planning teaser/overview/method figures, generating figure specs or AI figure prompts, rendering figure mockups, polishing figures/tables, checking claim-support alignment, or performing self-review before submission.
 ---
 # Research Paper Writing
 
@@ -15,6 +15,9 @@ Load `../shared/academic-figure-bridge.md` when the task includes teaser, overvi
 method, or comparison figures, figure prompts, or figure QA. It adds figure-role,
 style-branch, and asset-mode discipline without replacing normal charting or LaTeX
 packaging.
+Load `../shared/gpt-image-paper-render.md` when the user wants an actual rendered
+mockup or reference-image edit through GPT Image 2. It adds backend-specific command,
+quality, and failure-mode guidance after the figure brief is already locked.
 
 ## Core Workflow
 
@@ -24,14 +27,18 @@ packaging.
 3. If the task includes conceptual figure work, also load
    `../shared/academic-figure-bridge.md` and decide the figure role before choosing a
    style or writing a prompt.
-4. Rewrite paragraph-by-paragraph with one message per paragraph.
-5. Run reverse outlining after writing each section.
-6. Check every major claim in Abstract/Introduction and every factual synthesis in Related
+4. If the user wants an actual rendered mockup or reference-image edit, also load
+   `../shared/gpt-image-paper-render.md` after the figure brief is locked.
+5. Rewrite paragraph-by-paragraph with one message per paragraph.
+6. Run reverse outlining after writing each section.
+7. Check every major claim in Abstract/Introduction and every factual synthesis in Related
    Work against experimental evidence or real citations.
-7. For figure tasks, choose `editable spec`, `AI prompt`, or `hybrid` mode, then run the
+8. For figure tasks, choose `editable spec`, `AI prompt`, or `hybrid` mode, then run the
    figure QA gate before final handoff.
-8. Run final-paper adversarial review with `references/paper-review.md`.
-9. Finish with a style sweep against the shared bridge: remove filler, repeated sentence
+9. If GPT Image 2 rendering is requested, choose `text-to-image` or `reference-image edit`
+   mode only after the figure brief is stable, and record the render QA risks.
+10. Run final-paper adversarial review with `references/paper-review.md`.
+11. Finish with a style sweep against the shared bridge: remove filler, repeated sentence
    starts, unsupported facts, terminology drift, and forced bullets.
 
 ## Global Principles
@@ -90,6 +97,10 @@ writing task.
 5. Use normal plotting workflows for quantitative charts; use this bridge for
    conceptual diagrams, teaser figures, and prompt or spec generation.
 6. Do not hand off a figure brief or prompt until the figure QA gate is clean.
+7. Use GPT Image 2 only when the user wants an actual render or reference-image edit;
+   keep quantitative charts and exact final diagrams on deterministic or editable paths.
+8. For GPT Image 2 renders, prefer `high` quality and 2K-or-larger outputs for
+   paper-facing mockups.
 
 ## Section Guides
 
@@ -97,6 +108,7 @@ Load only the needed section file:
 
 - Shared style bridge: `../shared/agent-style-paper-bridge.md`
 - Shared figure bridge: `../shared/academic-figure-bridge.md`
+- Shared GPT Image 2 render bridge: `../shared/gpt-image-paper-render.md`
 - Introduction: `references/introduction.md`
 - Abstract: `references/abstract.md`
 - Related Work: `references/related-work.md`
@@ -136,6 +148,7 @@ Use `references/paper-review.md` for the full checklist and workflow.
 8. Do not load all section references (Introduction/Abstract/Related Work/Method/Experiments/Conclusion) at once; load only the specific section guide needed for the current edit target.
 9. For conceptual figure work, decide `figure_role -> asset_mode -> style_branch -> layout_spec -> QA` in that order.
 10. Prefer editable figure specs or vector-first instructions for final submission-facing work; only emit raw AI-image prompts when the user wants them or when ideation speed matters more than editability.
+11. If GPT Image 2 is used, treat it as a render backend after the figure brief is locked; prefer `text-to-image` for fresh mockups and `reference-image edit` for controlled restyling.
 
 ## Output Contract
 
@@ -149,3 +162,5 @@ When asked to rewrite or draft sections, return:
 6. When figure work is requested, a figure brief with `figure_role`, `asset_mode`,
    `style_branch`, `layout_spec`, `caption_hook`, optional English `figure_prompt`, and
    `qa_risks`.
+7. When GPT Image 2 rendering is requested, a render plan with `render_backend`,
+   `render_mode`, `render_prompt`, `render_inputs`, and `render_qa_risks`.

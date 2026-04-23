@@ -10,7 +10,7 @@ Use this reference to keep the orchestrator thin and consistent.
 | Claim gate | Decide what the paper can honestly claim | supported / partial / unsupported table | never skip entirely |
 | Plan | Lock the paper story before prose | thesis, outline, figure plan | only shorten when the draft is already stable |
 | Draft | Write sections with `research-paper-writing` | section drafts, updated claim-evidence map | skip if the user already has a full draft |
-| Package | Produce figures + LaTeX + PDF artifacts | figure set, figure specs/prompts, `.tex`, `.pdf` | shorten if the user only wants text |
+| Package | Produce figures + LaTeX + PDF artifacts | figure set, figure specs/prompts, optional rendered mockups, `.tex`, `.pdf` | shorten if the user only wants text |
 | Review | Run critique and polish | review notes, polish summary, remaining blockers | never skip for submission-facing work |
 | NotebookLM (optional) | Produce presentation assets | alt figures, slides, study-guide style assets | skip unless explicitly requested |
 
@@ -79,6 +79,9 @@ Rules:
 3. Keep quantitative charts programmatic when possible.
 4. Reject figures with empty boxes, decorative color blocks, terminology drift, or obvious
    AI-looking clutter.
+5. If GPT Image 2 is used, prefer `high` quality for typography-heavy paper figures and
+   record the exact render mode (`text-to-image` or `reference-image edit`).
+6. Do not assume mask-based inpainting is available with GPT Image 2.
 
 ## Review package
 

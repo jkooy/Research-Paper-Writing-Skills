@@ -39,6 +39,18 @@ quantitative chart, prefer a deterministic plotting workflow.
 5. Write the caption hook and cross-reference role in the paper.
 6. Run the QA gate before treating the figure as ready.
 
+## Optional Render Backend
+
+If the user wants an actual rendered mockup or reference-image edit, load
+`../shared/gpt-image-paper-render.md` after the figure brief is locked.
+
+1. Treat GPT Image 2 as a render or edit backend, not as the source of the paper's
+   figure logic.
+2. Use it for teaser or overview mockups, Chinese-typography-heavy visuals, and
+   reference-image edits.
+3. Keep quantitative charts and final camera-ready diagrams on deterministic or
+   editable paths unless the user explicitly wants an image-model draft.
+
 ## Style Branches
 
 ### Traditional Academic Default
@@ -110,7 +122,8 @@ When figure work is requested, return:
 6. `required_elements`
 7. `caption_hook`
 8. optional English `figure_prompt`
-9. `qa_risks`
+9. optional `render_backend`
+10. `qa_risks`
 
 ## Attribution
 
