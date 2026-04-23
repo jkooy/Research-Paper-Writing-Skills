@@ -1,6 +1,6 @@
 ---
 name: research-paper-workflow
-description: Orchestrate an end-to-end ML/CV/NLP-style paper workflow: claim gating, outline planning, drafting via research-paper-writing, agent-style-backed style gates, figure strategy and figure QA, LaTeX/PDF packaging, final review and polish, with an optional NotebookLM asset branch.
+description: "Orchestrate an end-to-end ML/CV/NLP-style paper workflow: claim gating, outline planning, drafting via research-paper-writing, agent-style-backed style gates, figure strategy and figure QA, LaTeX/PDF packaging, final review and polish, with an optional NotebookLM asset branch."
 ---
 # Research Paper Workflow
 
